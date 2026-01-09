@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
-int main()
+
+void PrintMenu()
 {
     cout << "1: Print Help " << endl;
     cout << "2: Print Exchange stats " << endl;
@@ -9,39 +10,84 @@ int main()
     cout << "5: Print wallet " << endl;
     cout << "6: Continue " << endl;
     cout << "================" << endl;
-    cout << "Type in 1-6" << endl;
+}
 
+int getUserOption()
+{
     int userOption;
+    cout << "Type in 1-6" << endl;
     cin >> userOption;
     cout << "You choose: " << userOption << endl;
-    if (userOption==0)
+    return userOption;
+}
+void printHelp()
+{
+    cout << "Invalid choice. Choose 1-6" << endl;
+}
+void printMarketStats()
+{
+    cout << "Help - your aim is to make money. Analyze the market and make bids and offers " << endl;
+}
+void enterOffer()
+{
+    cout << "Market looks good" << endl;
+}
+void enterOffer()
+{
+    cout << "Mark an offer - enter the amount" << endl;
+}
+void enterBid()
+{
+    cout << "Mark a bid - enter the amount" << endl;
+}
+void printWallet()
+{
+    cout << "Your wallet is empty" << endl;
+}
+void nextTimeFrame()
+{
+    cout << "Going to next time frame" << endl;
+}
+void processUserOption(int userOption)
+{
+    if (userOption == 0)
     {
-        cout<<"Invalid choice. Choose 1-6"<<endl;
+        printHelp();
     }
-    if (userOption==1)
+    if (userOption == 1)
     {
-        cout<<"Help - your aim is to make money. Analyze the market and make bids and offers "<<endl;
+        printMarketStats();
     }
-    if (userOption==2)
+    if (userOption == 2)
     {
-        cout<<"Market looks good"<<endl;
+        enterOffer();
     }
-    if (userOption==3)
+    if (userOption == 3)
     {
-        cout<<"Mark an offer - enter the amount"<<endl;
+        enterOffer();
     }
-    if (userOption==4)
+    if (userOption == 4)
     {
-        cout<<"Mark a bid - enter the amount"<<endl;
+        enterBid();
     }
-    if (userOption==5)
+    if (userOption == 5)
     {
-        cout<<"Your wallet is empty"<<endl;
+        printWallet();
     }
-    if (userOption==6)
+    if (userOption == 6)
     {
-        cout<<"Going to next time frame"<<endl;
+        nextTimeFrame();
     }
-    
+}
+
+int main()
+{
+    while (true)
+    {
+        PrintMenu();
+        int userOption = getUserOption();
+        processUserOption(userOption);
+    }
+
     return 0;
 }
