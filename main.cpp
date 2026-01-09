@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 void PrintMenu()
@@ -82,6 +83,13 @@ void processUserOption(int userOption)
 
 int main()
 {
+    double price = 5348.8502489;
+    double amount = 0.46021;
+
+    string timestamp{"2020/03/17 17:01:24.884492"};
+    string product{"BTC/USDT"};
+    string ordertype{"bid"};
+
     while (true)
     {
         PrintMenu();
