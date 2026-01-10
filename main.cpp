@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 void PrintMenu()
@@ -80,15 +81,51 @@ void processUserOption(int userOption)
         nextTimeFrame();
     }
 }
+enum class OrderBookType
+{
+    bid,
+    ask
+};
 
+enum class OrderBookType
+{
+    bid,
+    ask
+};
+class OrderBookEntry
+{
+public:
+    OrderBookEntry(double _price,
+                   double _amount,
+                   std::string _timestamp,
+                   std::string _product,
+                   OrderBookType _orderType)
+        : price(_price),
+          amount(_amount),
+          timestamp(_timestamp),
+          product(_product),
+          orderType(_orderType)
+    {
+    }
+    double price;
+    double amount;
+    std::string timestamp;
+    std::string product;
+    OrderBookType orderType;
+};
 int main()
 {
-    double price = 5348.8502489;
-    double amount = 0.46021;
+    vector<double> price;
+    vector<double> amount;
+    vector<string> timestamp;
+    vector<string> product;
+    vector<OrderBookType> ordertype;
 
-    string timestamp{"2020/03/17 17:01:24.884492"};
-    string product{"BTC/USDT"};
-    string ordertype{"bid"};
+    price.push_back(5348.8502489);
+    amount.push_back(0.46021);
+    timestamp.push_back("2020/03/17 17:01:24.884492");
+    product.push_back("BTC/USDT");
+    ordertype.push_back(OrderBookType::bid);
 
     while (true)
     {
@@ -96,6 +133,17 @@ int main()
         int userOption = getUserOption();
         processUserOption(userOption);
     }
+    vector<OrderBookEntry> orders;
+    orders.push_back({1000,
+                      0.02,
+                      "2020/03/17 17:01:24.884492",
+                      "BTC/USDT",
+                      OrderBookType::bid});
+    orders.push_back({2000,
+                      0.02,
+                      "2020/03/17 17:01:24.884492",
+                      "BTC/USDT",
+                      OrderBookType::bid});
 
     return 0;
 }
