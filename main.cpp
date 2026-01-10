@@ -1,149 +1,146 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "OrderBookEntry.h"
 using namespace std;
 
-void PrintMenu()
+void printMenu();
+int getUserOption();
+void printHelp();
+void printMarketStats();
+void placeAsk();
+void placeBid();
+void printWallet();
+void nextTimeFrame();
+void processUserOption(int userOption);
+
+double computeAveragePrice(const vector<OrderBookEntry> &entries)
 {
-    cout << "1: Print Help " << endl;
-    cout << "2: Print Exchange stats " << endl;
-    cout << "3: Make an offer " << endl;
-    cout << "4: Make a bid " << endl;
-    cout << "5: Print wallet " << endl;
-    cout << "6: Continue " << endl;
+    double sum = 0;
+    for (const OrderBookEntry &e : entries)
+        sum += e.price;
+
+    return entries.empty() ? 0 : sum / entries.size();
+}
+
+double computeLowPrice(const vector<OrderBookEntry> &entries)
+{
+    double low = entries[0].price;
+    for (const OrderBookEntry &e : entries)
+        if (e.price < low)
+            low = e.price;
+    return low;
+}
+
+double computeHighPrice(const vector<OrderBookEntry> &entries)
+{
+    double high = entries[0].price;
+    for (const OrderBookEntry &e : entries)
+        if (e.price > high)
+            high = e.price;
+    return high;
+}
+
+double computePriceSpread(const vector<OrderBookEntry> &entries)
+{
+    return computeHighPrice(entries) - computeLowPrice(entries);
+}
+
+int main()
+{
+    vector<OrderBookEntry> orders;
+
+    orders.push_back({0.02186299, 0.1,
+                      "2020/03/17 17:01:24.884492",
+                      "ETH/BTC",
+                      OrderBookType::bid});
+
+    orders.push_back({0.02190000, 0.25,
+                      "2020/03/17 17:01:30.000000",
+                      "ETH/BTC",
+                      OrderBookType::ask});
+
+    orders.push_back({0.02185000, 0.15,
+                      "2020/03/17 17:01:40.000000",
+                      "ETH/BTC",
+                      OrderBookType::bid});
+
+    for (const OrderBookEntry &e : orders)
+        cout << e.price << endl;
+
+    cout << "Average price: " << computeAveragePrice(orders) << endl;
+    cout << "Low price: " << computeLowPrice(orders) << endl;
+    cout << "High price: " << computeHighPrice(orders) << endl;
+    cout << "Price spread: " << computePriceSpread(orders) << endl;
+
+    return 0;
+}
+
+void printMenu()
+{
+    cout << "1: Print help" << endl;
+    cout << "2: Print exchange stats" << endl;
+    cout << "3: Place an ask" << endl;
+    cout << "4: Place a bid" << endl;
+    cout << "5: Print wallet" << endl;
+    cout << "6: Continue" << endl;
     cout << "================" << endl;
 }
 
 int getUserOption()
 {
     int userOption;
-    cout << "Type in 1-6" << endl;
+    cout << "Type in 1-6: ";
     cin >> userOption;
-    cout << "You choose: " << userOption << endl;
     return userOption;
 }
+
 void printHelp()
 {
-    cout << "Invalid choice. Choose 1-6" << endl;
+    cout << "Help: Your aim is to make money. Analyze the market and make bids and offers."
+         << endl;
 }
+
 void printMarketStats()
 {
-    cout << "Help - your aim is to make money. Analyze the market and make bids and offers " << endl;
+    cout << "Market stats: Prices are moving..." << endl;
 }
-void enterOffer()
+
+void placeAsk()
 {
-    cout << "Market looks good" << endl;
+    cout << "Placing an ask - enter the amount" << endl;
 }
-void enterOffer()
+
+void placeBid()
 {
-    cout << "Mark an offer - enter the amount" << endl;
+    cout << "Placing a bid - enter the amount" << endl;
 }
-void enterBid()
-{
-    cout << "Mark a bid - enter the amount" << endl;
-}
+
 void printWallet()
 {
     cout << "Your wallet is empty" << endl;
 }
+
 void nextTimeFrame()
 {
     cout << "Going to next time frame" << endl;
 }
+
 void processUserOption(int userOption)
 {
-    if (userOption == 0)
-    {
-        printHelp();
-    }
     if (userOption == 1)
-    {
+        printHelp();
+    else if (userOption == 2)
         printMarketStats();
-    }
-    if (userOption == 2)
-    {
-        enterOffer();
-    }
-    if (userOption == 3)
-    {
-        enterOffer();
-    }
-    if (userOption == 4)
-    {
-        enterBid();
-    }
-    if (userOption == 5)
-    {
+    else if (userOption == 3)
+        placeAsk();
+    else if (userOption == 4)
+        placeBid();
+    else if (userOption == 5)
         printWallet();
-    }
-    if (userOption == 6)
-    {
+    else if (userOption == 6)
         nextTimeFrame();
-    }
-}
-enum class OrderBookType
-{
-    bid,
-    ask
-};
-
-enum class OrderBookType
-{
-    bid,
-    ask
-};
-class OrderBookEntry
-{
-public:
-    OrderBookEntry(double _price,
-                   double _amount,
-                   std::string _timestamp,
-                   std::string _product,
-                   OrderBookType _orderType)
-        : price(_price),
-          amount(_amount),
-          timestamp(_timestamp),
-          product(_product),
-          orderType(_orderType)
-    {
-    }
-    double price;
-    double amount;
-    std::string timestamp;
-    std::string product;
-    OrderBookType orderType;
-};
-int main()
-{
-    vector<double> price;
-    vector<double> amount;
-    vector<string> timestamp;
-    vector<string> product;
-    vector<OrderBookType> ordertype;
-
-    price.push_back(5348.8502489);
-    amount.push_back(0.46021);
-    timestamp.push_back("2020/03/17 17:01:24.884492");
-    product.push_back("BTC/USDT");
-    ordertype.push_back(OrderBookType::bid);
-
-    while (true)
-    {
-        PrintMenu();
-        int userOption = getUserOption();
-        processUserOption(userOption);
-    }
-    vector<OrderBookEntry> orders;
-    orders.push_back({1000,
-                      0.02,
-                      "2020/03/17 17:01:24.884492",
-                      "BTC/USDT",
-                      OrderBookType::bid});
-    orders.push_back({2000,
-                      0.02,
-                      "2020/03/17 17:01:24.884492",
-                      "BTC/USDT",
-                      OrderBookType::bid});
-
-    return 0;
+    else
+        cout << "Invalid choice. Please select 1-6." << endl;
 }
