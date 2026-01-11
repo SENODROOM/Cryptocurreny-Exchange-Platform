@@ -1,5 +1,7 @@
 #include "MerkelMain.h"
+#include "OrderBookEntry.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 MerkelMain::MerkelMain()
@@ -10,6 +12,7 @@ void MerkelMain::init()
     int userOption;
     while (true)
     {
+        loadOrderBook();
         printMenu();
         userOption = getUserOption();
         processUserOption(userOption);
@@ -42,7 +45,7 @@ void MerkelMain::printHelp()
 
 void MerkelMain::printMarketStats()
 {
-    cout << "Market stats: Prices are moving..." << endl;
+    cout << "OrderBook contains " << orders.size() << "entries" << endl;
 }
 
 void MerkelMain::placeAsk()
@@ -81,4 +84,26 @@ void MerkelMain::processUserOption(int userOption)
         nextTimeFrame();
     else
         cout << "Invalid choice. Please select 1-6." << endl;
+}
+
+void MerkelMain::loadOrderBook()
+{
+
+    orders.push_back({0.02186299, 0.1,
+                      "2020/03/17 17:01:24.884492",
+                      "ETH/BTC",
+                      OrderBookType::bid});
+
+    orders.push_back({0.02190000, 0.25,
+                      "2020/03/17 17:01:30.000000",
+                      "ETH/BTC",
+                      OrderBookType::ask});
+
+    orders.push_back({0.02185000, 0.15,
+                      "2020/03/17 17:01:40.000000",
+                      "ETH/BTC",
+                      OrderBookType::bid});
+
+    for (const OrderBookEntry &e : orders)
+        cout << e.price << endl;
 }
