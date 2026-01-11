@@ -1,5 +1,6 @@
 #include "MerkelMain.h"
 #include "OrderBookEntry.h"
+#include "CSVReader.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -9,10 +10,10 @@ MerkelMain::MerkelMain()
 }
 void MerkelMain::init()
 {
+    loadOrderBook();
     int userOption;
     while (true)
     {
-        loadOrderBook();
         printMenu();
         userOption = getUserOption();
         processUserOption(userOption);
@@ -45,7 +46,21 @@ void MerkelMain::printHelp()
 
 void MerkelMain::printMarketStats()
 {
-    cout << "OrderBook contains " << orders.size() << "entries" << endl;
+    cout << "OrderBook contains " << orders.size() << " entries" << endl;
+    unsigned int bids = 0;
+    unsigned int asks = 0;
+    for (OrderBookEntry &e : orders)
+    {
+        if (e.orderType == OrderBookType::ask)
+        {
+            asks++;
+        }
+        if (e.orderType == OrderBookType::bid)
+        {
+            bids++;
+        }
+    }
+    std::cout << "OrderBook asks: " << asks << "bids:" << bids << std::endl;
 }
 
 void MerkelMain::placeAsk()
@@ -89,21 +104,22 @@ void MerkelMain::processUserOption(int userOption)
 void MerkelMain::loadOrderBook()
 {
 
-    orders.push_back({0.02186299, 0.1,
-                      "2020/03/17 17:01:24.884492",
-                      "ETH/BTC",
-                      OrderBookType::bid});
+    // orders.push_back({0.02186299, 0.1,
+    //                   "2020/03/17 17:01:24.884492",
+    //                   "ETH/BTC",
+    //                   OrderBookType::bid});
 
-    orders.push_back({0.02190000, 0.25,
-                      "2020/03/17 17:01:30.000000",
-                      "ETH/BTC",
-                      OrderBookType::ask});
+    // orders.push_back({0.02190000, 0.25,
+    //                   "2020/03/17 17:01:30.000000",
+    //                   "ETH/BTC",
+    //                   OrderBookType::ask});
 
-    orders.push_back({0.02185000, 0.15,
-                      "2020/03/17 17:01:40.000000",
-                      "ETH/BTC",
-                      OrderBookType::bid});
+    // orders.push_back({0.02185000, 0.15,
+    //                   "2020/03/17 17:01:40.000000",
+    //                   "ETH/BTC",
+    //                   OrderBookType::bid});
 
-    for (const OrderBookEntry &e : orders)
-        cout << e.price << endl;
+    // for (const OrderBookEntry &e : orders)
+    //     cout << e.price << endl;
+    orders = CSVReader::readCSV("20200317.csv");
 }
