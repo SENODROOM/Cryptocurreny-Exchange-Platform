@@ -20,5 +20,6 @@ private:
     void printWallet();
     void nextTimeFrame();
     void processUserOption(int userOption);
+    std::string currentTime;
     OrderBook OrderBook{"20200317.csv"};
 };

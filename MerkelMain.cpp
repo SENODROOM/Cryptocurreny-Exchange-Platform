@@ -2,6 +2,7 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 #include <iostream>
+#include <string>
 #include <vector>
 using namespace std;
 
@@ -11,6 +12,7 @@ MerkelMain::MerkelMain()
 void MerkelMain::init()
 {
     int userOption;
+    currentTime = OrderBook.getEarliestTime();
     while (true)
     {
         printMenu();
@@ -27,6 +29,7 @@ void MerkelMain::printMenu()
     cout << "5: Print wallet" << endl;
     cout << "6: Continue" << endl;
     cout << "================" << endl;
+    cout << "Current time is: " << currentTime << endl;
 }
 
 int MerkelMain::getUserOption()
@@ -45,20 +48,38 @@ void MerkelMain::printHelp()
 
 void MerkelMain::printMarketStats()
 {
-    for (std::string const p : OrderBook.getKnownProducts())
+    for (string const p : OrderBook.getKnownProducts())
     {
-        std::cout << "Product: " << p << std::endl;
-        std::vector<OrderBookEntry> entries = OrderBook.getOrders(OrderBookType::ask,
-                                                                  p,
-                                                                  "2020/03/17 17:01:24.884492");
-        std::cout << "Asks seen: " << entries.size() << std::endl;
-        std::cout << "Max ask: " << OrderBook::getHighPrice(entries) << std::endl;
+        cout << "Product: " << p << endl;
+        vector<OrderBookEntry> entries = OrderBook.getOrders(OrderBookType::ask,
+                                                             p,
+                                                             currentTime);
+        cout << "Asks seen: " << entries.size() << endl;
+        cout << "Max ask: " << OrderBook::getHighPrice(entries) << endl;
     }
 }
 
 void MerkelMain::placeAsk()
 {
-    cout << "Placing an ask - enter the amount" << endl;
+    cout << "Placing an ask - enter the amount: product,price,amount eg ETH/BTC,200,0" << endl;
+    string input;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+    vector<string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3)
+    {
+        cout << "Bad Input! " << input << endl;
+    }
+    else
+    {
+        OrderBookEntry obe = CSVReader::stringsToOBE(
+            tokens[1],
+            tokens[2],
+            currentTime,
+            tokens[0],
+            OrderBookType::ask);
+    }
+    cout << "You typed: " << input << endl;
 }
 
 void MerkelMain::placeBid()
@@ -74,6 +95,7 @@ void MerkelMain::printWallet()
 void MerkelMain::nextTimeFrame()
 {
     cout << "Going to next time frame" << endl;
+    currentTime = OrderBook.getNextTime(currentTime);
 }
 
 void MerkelMain::processUserOption(int userOption)
