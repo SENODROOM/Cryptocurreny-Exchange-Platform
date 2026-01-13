@@ -130,6 +130,7 @@ void MerkelMain::placeBid()
                 currentTime,
                 tokens[0],
                 OrderBookType::bid);
+            obe.username = "simuser";
             if (wallet.canFulfillOrder(obe))
             {
                 cout << "Wallet looks good. " << endl;
@@ -155,11 +156,19 @@ void MerkelMain::printWallet()
 void MerkelMain::nextTimeFrame()
 {
     cout << "Going to next time frame" << endl;
-    vector<OrderBookEntry> sales = OrderBook.matchAsksToBids("ETH/BTC", currentTime);
-    cout << "Sales: " << sales.size() << endl;
-    for (OrderBookEntry &sale : sales)
+    for (string p : OrderBook.getKnownProducts())
     {
-        cout << "Sale price: " << sale.price << " amount " << sale.amount << endl;
+        cout << "matching" << p << endl;
+        vector<OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
+        cout << "Sales: " << sales.size() << endl;
+        for (OrderBookEntry &sale : sales)
+        {
+            cout << "Sale price: " << sale.price << " amount " << sale.amount << endl;
+            if (sale.username == "simuser")
+            {
+                wallet.processSale(sale);
+            }
+        }
     }
 
     currentTime = OrderBook.getNextTime(currentTime);
