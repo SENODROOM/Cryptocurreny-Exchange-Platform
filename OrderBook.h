@@ -13,6 +13,9 @@ public:
                                           std::string timestamp);
     std::string getEarliestTime();
     std::string getNextTime(std::string timestamp);
+
+    void insertOrder(OrderBookEntry &order);
+
     static double getHighPrice(std::vector<OrderBookEntry> &orders);
 
 private:

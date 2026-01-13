@@ -1,6 +1,7 @@
 #include "OrderBook.h"
 #include <map>
 #include <vector>
+#include <algorithm>
 OrderBook::OrderBook(std::string filename)
 {
     orders = CSVReader::readCSV(filename);
@@ -71,4 +72,10 @@ std::string OrderBook::getNextTime(std::string timestamp)
         next_timestamp = orders[0].timestamp;
     }
     return next_timestamp;
+}
+
+void OrderBook::insertOrder(OrderBookEntry &order)
+{
+    orders.push_back(order);
+    std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }

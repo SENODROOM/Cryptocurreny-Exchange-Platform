@@ -34,9 +34,18 @@ void MerkelMain::printMenu()
 
 int MerkelMain::getUserOption()
 {
-    int userOption;
+    int userOption = 0;
+    string line;
     cout << "Type in 1-6: ";
-    cin >> userOption;
+    getline(cin, line);
+    try
+    {
+        userOption = stoi(line);
+    }
+    catch (const exception &e)
+    {
+    }
+
     return userOption;
 }
 
@@ -72,12 +81,20 @@ void MerkelMain::placeAsk()
     }
     else
     {
-        OrderBookEntry obe = CSVReader::stringsToOBE(
-            tokens[1],
-            tokens[2],
-            currentTime,
-            tokens[0],
-            OrderBookType::ask);
+        try
+        {
+            OrderBookEntry obe = CSVReader::stringsToOBE(
+                tokens[1],
+                tokens[2],
+                currentTime,
+                tokens[0],
+                OrderBookType::ask);
+            OrderBook.insertOrder(obe);
+        }
+        catch (const exception &e)
+        {
+            cout << "MerkelMain::placeAsk Bad input " << endl;
+        }
     }
     cout << "You typed: " << input << endl;
 }
