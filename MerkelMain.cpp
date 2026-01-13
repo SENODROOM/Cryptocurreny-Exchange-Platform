@@ -13,6 +13,9 @@ void MerkelMain::init()
 {
     int userOption;
     currentTime = OrderBook.getEarliestTime();
+
+    wallet.insertCurrency("BTC", 10);
+
     while (true)
     {
         printMenu();
@@ -89,7 +92,15 @@ void MerkelMain::placeAsk()
                 currentTime,
                 tokens[0],
                 OrderBookType::ask);
-            OrderBook.insertOrder(obe);
+            if (wallet.canFulfillOrder(obe))
+            {
+                cout << "Wallet looks good. " << endl;
+                OrderBook.insertOrder(obe);
+            }
+            else
+            {
+                cout << "Wallet has insufficient funds. " << endl;
+            }
         }
         catch (const exception &e)
         {
@@ -107,11 +118,19 @@ void MerkelMain::placeBid()
 void MerkelMain::printWallet()
 {
     cout << "Your wallet is empty" << endl;
+    cout << wallet.toString() << endl;
 }
 
 void MerkelMain::nextTimeFrame()
 {
     cout << "Going to next time frame" << endl;
+    vector<OrderBookEntry> sales = OrderBook.matchAsksToBids("ETH/BTC", currentTime);
+    cout << "Sales: " << sales.size() << endl;
+    for (OrderBookEntry &sale : sales)
+    {
+        cout << "Sale price: " << sale.price << " amount " << sale.amount << endl;
+    }
+
     currentTime = OrderBook.getNextTime(currentTime);
 }
 
