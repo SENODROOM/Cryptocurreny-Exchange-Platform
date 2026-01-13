@@ -107,17 +107,48 @@ void MerkelMain::placeAsk()
             cout << "MerkelMain::placeAsk Bad input " << endl;
         }
     }
-    cout << "You typed: " << input << endl;
 }
 
 void MerkelMain::placeBid()
 {
-    cout << "Placing a bid - enter the amount" << endl;
+    cout << "Placing an bid - enter the amount: product,price,amount eg ETH/BTC,200,0" << endl;
+    string input;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+    vector<string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3)
+    {
+        cout << "Bad Input! " << input << endl;
+    }
+    else
+    {
+        try
+        {
+            OrderBookEntry obe = CSVReader::stringsToOBE(
+                tokens[1],
+                tokens[2],
+                currentTime,
+                tokens[0],
+                OrderBookType::bid);
+            if (wallet.canFulfillOrder(obe))
+            {
+                cout << "Wallet looks good. " << endl;
+                OrderBook.insertOrder(obe);
+            }
+            else
+            {
+                cout << "Wallet has insufficient funds. " << endl;
+            }
+        }
+        catch (const exception &e)
+        {
+            cout << "MerkelMain::placeBid Bad input " << endl;
+        }
+    }
 }
 
 void MerkelMain::printWallet()
 {
-    cout << "Your wallet is empty" << endl;
     cout << wallet.toString() << endl;
 }
 
