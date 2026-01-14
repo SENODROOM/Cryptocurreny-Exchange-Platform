@@ -40,24 +40,14 @@ Simulates core exchange functionalities such as **order books, wallets, CSV-base
 
 ```text
 Cryptocurrency-Exchange-Platform/
-│
-├── src/
-│   ├── MerkelMain.cpp        # Main console interface and control flow
-│   ├── OrderBook.cpp         # Order book logic
-│   ├── OrderBookEntry.cpp    # Order representation
-│   ├── Wallet.cpp            # Wallet management logic
-│   └── CSVReader.cpp         # CSV market data parser
-│
-├── include/
-│   ├── OrderBook.h
-│   ├── OrderBookEntry.h
-│   ├── Wallet.h
-│   └── CSVReader.h
-│
-├── data/
-│   └── market_data.csv        # Sample market data CSV
-│
-└── README.md
+UI Layer (MerkelMain) 
+│ 
+├── Business Logic 
+│   ├── OrderBook 
+│   └── Wallet
+│ 
+└── Data Layer 
+    └── CSVReader
 ```
 
 - **Orders → OrderBookEntry**  
