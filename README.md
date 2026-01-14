@@ -1,201 +1,106 @@
-# Cryptocurrency Exchange Platform (C++)
+# 🪙 Cryptocurrency Exchange Platform (C++)
 
-A console-based Cryptocurrency Exchange Platform implemented in **C++ using Object-Oriented Programming (OOP)** principles.  
-This project simulates the core functionality of a crypto exchange, including order books, wallets, CSV-based market data, and time-based trading simulation.
+A **console-based Cryptocurrency Exchange Platform** implemented in **C++** using **Object-Oriented Programming (OOP)** principles.  
+Simulates core exchange functionalities such as **order books, wallets, CSV-based market data ingestion**, and **time-based trading simulation**.
 
-> 📘 Inspired by real-world exchange mechanics and developed as part of an Object-Oriented Programming specialization.
-
----
-
-## 📌 Features
-
-- 📊 **Order Book System**
-  - Bid and ask orders
-  - Time-based order matching
-  - Price statistics (min, max, average)
-
-- 💼 **Wallet Management**
-  - Insert and update currency balances
-  - Prevents invalid transactions
-  - Exception handling for invalid inputs
-
-- 📁 **CSV Market Data Reader**
-  - Parses historical market data from CSV files
-  - Converts rows into structured order book entries
-
-- ⏱️ **Time-Step Simulation**
-  - Market advances over time
-  - Orders processed per timestamp
-
-- 🧠 **OOP Design**
-  - Clear class separation
-  - Encapsulation and modularity
-  - Header/source file structure
+> 📘 Inspired by real-world crypto exchanges and developed as part of an Object-Oriented Programming specialization course.
 
 ---
 
-## 🗂️ Project Structure:
-UI Layer (MerkelMain)
+## ✨ Features
+
+### 📊 Order Book System
+- Supports **bid (buy) and ask (sell) orders**
+- **Time-based order matching** simulation
+- Price statistics: **minimum, maximum, and average**
+
+### 💼 Wallet Management
+- Insert and update **currency balances**
+- Prevents **invalid or negative transactions**
+- **Exception handling** for erroneous inputs
+
+### 📁 CSV Market Data Handling
+- Parses historical market data from **CSV files**
+- Converts rows into structured **OrderBookEntry** objects
+- Maintains **data integrity** by ignoring malformed entries
+
+### ⏱️ Time-Step Simulation
+- Market progresses in **discrete timestamps**
+- Orders are evaluated per timestamp
+- Enables **realistic market simulation**
+
+### 🧠 OOP Design
+- Clear **class separation** for modularity
+- Encapsulation and **clean header/source file structure**
+- Easy to **extend and maintain**
+
+---
+
+## 🗂️ Project Structure
+
+```text
+Cryptocurrency-Exchange-Platform/
 │
-├── Business Logic
-│   ├── OrderBook
-│   ├── Wallet
+├── src/
+│   ├── MerkelMain.cpp        # Main console interface and control flow
+│   ├── OrderBook.cpp         # Order book logic
+│   ├── OrderBookEntry.cpp    # Order representation
+│   ├── Wallet.cpp            # Wallet management logic
+│   └── CSVReader.cpp         # CSV market data parser
 │
-└── Data Layer
-    └── CSVReader
-Orders → OrderBookEntry
-Market → OrderBook
-Storage → Wallet
-Input source → CSVReader
+├── include/
+│   ├── OrderBook.h
+│   ├── OrderBookEntry.h
+│   ├── Wallet.h
+│   └── CSVReader.h
+│
+├── data/
+│   └── market_data.csv        # Sample market data CSV
+│
+└── README.md
 
+- **Orders → OrderBookEntry**  
+- **Market → OrderBook**  
+- **Storage → Wallet**  
+- **Input source → CSVReader**  
 
+---
 
-1️⃣ USER INTERFACE & CONTROL FLOW (MerkelMain)
-🔹 Menu-Driven Console Interface
-The system provides a console-based menu allowing the user to:
-  • Navigate the exchange
-  • View market statistics
-  • Place orders
-  • Manage wallet balances
-  • Advance the market in time
+## 🖥️ Modules & Functionality
 
-🔹 Input Validation
-User input is validated to avoid invalid menu choices
-Prevents program crashes due to wrong input
+### 1️⃣ User Interface & Control Flow (MerkelMain)
+- **Menu-driven console interface**:
+  - Navigate the exchange
+  - View market statistics
+  - Place orders
+  - Manage wallet balances
+  - Advance market time
+- **Input validation** prevents invalid menu choices
+- Each menu cycle represents a **market tick**
+- **Purpose:** Coordinates all system components
 
-🔹 Time Control
-The exchange operates on discrete timestamps
-Each menu cycle represents a market tick
-User explicitly moves the market forward
+### 2️⃣ Market Data Handling (CSVReader)
+- Reads CSV rows: `timestamp`, `product pair`, `order type`, `price`, `amount`
+- Converts raw CSV data into **OrderBookEntry** objects
+- Ignores malformed lines for **data integrity**
+- **Purpose:** Simulates historical market feeds
 
-📌 Functionality Purpose:
-Acts as the controller coordinating all system components.
+### 3️⃣ Order Representation (OrderBookEntry)
+- Stores **price, amount, timestamp, product pair, order type, username**
+- Strongly typed **bid/ask distinction**
+- **Purpose:** Provides a reusable order data model
 
-2️⃣ MARKET DATA HANDLING (CSVReader)
-🔹 CSV File Parsing
-Reads market data from CSV files
-Each row contains:
-  • timestamp
-  • product pair (e.g., BTC/USDT)
-  • order type (bid/ask)
-  • price
-  • amount
+### 4️⃣ Order Book Management (OrderBook)
+- Stores orders by **product, timestamp, and type**
+- Checks wallet balances before placing orders
+- Prevents **negative currency amounts**
+- **Purpose:** Simulates secure market order management
 
-🔹 Data Conversion
-Converts raw CSV strings into OrderBookEntry objects
-Ensures numeric fields are correctly parsed
+### 5️⃣ Wallet Management (Wallet)
+- Adds or updates currency balances
+- Prevents negative amounts
+- Throws exceptions for invalid operations
+- **Purpose:** Simulates a secure crypto wallet
 
-🔹 Data Integrity
-Ignores malformed lines
-Keeps market data consistent
-
-📌 Functionality Purpose:
-Provides historical market data ingestion, simulating real exchange feeds.
-
-3️⃣ ORDER REPRESENTATION (OrderBookEntry)
-🔹 Order Abstraction
-Each order is represented as an object containing:
-  • Price
-  • Amount
-  • Timestamp
-  • Product pair
-  • Order type (bid or ask)
-  • Username (if applicable)
-
-🔹 Strong Typing
-Order types are clearly distinguished
-Prevents mixing bids and asks
-
-📌 Functionality Purpose:
-Creates a clean and reusable data model for all market orders.
-
-
-4️⃣ ORDER BOOK MANAGEMENT (OrderBook)
-🔹 Order Storage
-Stores all orders in memory
-Organized by:
-  • Product
-  • Timestamp
-  • Order type
-
-🔹 Balance Validation
-Prevents insertion of negative currency amounts
-Ensures wallet consistency
-
-🔹 Balance Checking
-Checks whether the user has sufficient funds
-Required before placing orders
-
-🔹 Exception Handling
-Throws exceptions for invalid operations
-Prevents invalid financial state
-
-📌 Functionality Purpose:
-Simulates a secure crypto wallet.
-
-
-5️⃣ WALLET MANAGEMENT (Wallet)
-🔹 Currency Insertion
-Adds new currency to wallet if not present
-Updates existing currency balances
-
-🔹 Balance Validation
-Prevents insertion of negative currency amounts
-Ensures wallet consistency
-
-🔹 Balance Checking
-Checks whether the user has sufficient funds
-Required before placing orders
-
-🔹 Exception Handling
-Throws exceptions for invalid operations
-Prevents invalid financial state
-
-📌 Functionality Purpose:
-Simulates a secure crypto wallet.
-
-
-
-6️⃣ ORDER PLACEMENT
-🔹 Bid Orders (Buy)
-User can place buy orders
-Requires sufficient quote currency
-Order is added to the order book
-
-🔹 Ask Orders (Sell)
-User can place sell orders
-Requires sufficient base currency
-Order is added to the order book
-
-🔹 Manual Trade Execution
-Orders are stored but not auto-matched
-Execution logic is separated (future upgrade)
-
-📌 Functionality Purpose:
-Allows user participation in the market.
-
-
-
-7️⃣ TIME SIMULATION ENGINE
-🔹 Discrete Time Steps
-Market progresses one timestamp at a time
-Orders are evaluated per time step
-
-🔹 Market Loop
-After reaching last timestamp, market loops back
-Enables continuous simulation
-
-📌 Functionality Purpose:
-Simulates how real exchanges evolve over time.
-
-8️⃣ ERROR HANDLING & SAFETY
-🔹 Invalid Input Protection
-Prevents crashes
-Guides user back to valid operations
-
-🔹 Financial Safety
-No negative balances
-No invalid trades
-
-📌 Functionality Purpose:
-Ensures system stability and correctness.
+### 6️⃣ Order Placement
+- **Bid (Buy**
