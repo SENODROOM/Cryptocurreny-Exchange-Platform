@@ -58,6 +58,7 @@ Cryptocurrency-Exchange-Platform/
 │   └── market_data.csv        # Sample market data CSV
 │
 └── README.md
+```
 
 - **Orders → OrderBookEntry**  
 - **Market → OrderBook**  
@@ -69,29 +70,29 @@ Cryptocurrency-Exchange-Platform/
 ## 🖥️ Modules & Functionality
 
 ### 1️⃣ User Interface & Control Flow (MerkelMain)
-- **Menu-driven console interface**:
+- **Menu-driven console interface** to:
   - Navigate the exchange
   - View market statistics
   - Place orders
   - Manage wallet balances
   - Advance market time
-- **Input validation** prevents invalid menu choices
-- Each menu cycle represents a **market tick**
+- **Input validation** to prevent invalid menu choices
+- **Time control:** each menu cycle represents a market tick
 - **Purpose:** Coordinates all system components
 
 ### 2️⃣ Market Data Handling (CSVReader)
-- Reads CSV rows: `timestamp`, `product pair`, `order type`, `price`, `amount`
+- **CSV parsing:** Reads timestamp, product pair, order type, price, and amount
 - Converts raw CSV data into **OrderBookEntry** objects
-- Ignores malformed lines for **data integrity**
+- Ignores malformed lines to maintain data integrity
 - **Purpose:** Simulates historical market feeds
 
 ### 3️⃣ Order Representation (OrderBookEntry)
-- Stores **price, amount, timestamp, product pair, order type, username**
+- Stores **price, amount, timestamp, product pair, order type, and username**
 - Strongly typed **bid/ask distinction**
-- **Purpose:** Provides a reusable order data model
+- **Purpose:** Provides a reusable data model for orders
 
 ### 4️⃣ Order Book Management (OrderBook)
-- Stores orders by **product, timestamp, and type**
+- Stores orders organized by **product, timestamp, and type**
 - Checks wallet balances before placing orders
 - Prevents **negative currency amounts**
 - **Purpose:** Simulates secure market order management
@@ -103,4 +104,46 @@ Cryptocurrency-Exchange-Platform/
 - **Purpose:** Simulates a secure crypto wallet
 
 ### 6️⃣ Order Placement
-- **Bid (Buy**
+- **Bid (Buy) Orders:** Requires sufficient quote currency
+- **Ask (Sell) Orders:** Requires sufficient base currency
+- Orders are stored but **not auto-matched**
+- **Purpose:** Allows user market participation
+
+### 7️⃣ Time Simulation Engine
+- Market progresses in **discrete time steps**
+- Orders evaluated per timestamp
+- Loops back after last timestamp for continuous simulation
+- **Purpose:** Mimics real-world market evolution
+
+### 8️⃣ Error Handling & Safety
+- **Invalid input protection** to prevent crashes
+- **Financial safety:** No negative balances, no invalid trades
+- **Purpose:** Ensures system stability and correctness
+
+---
+
+## ⚙️ Usage
+
+1. Compile the project using a C++ compiler (e.g., `g++` or `clang++`)
+2. Run the console application
+3. Navigate through the menu to:
+   - View market stats
+   - Manage your wallet
+   - Place orders
+   - Advance time for simulation
+
+---
+
+## 📝 Notes
+
+- This project is a **simulation** and does not connect to real cryptocurrency markets.
+- Designed for **educational purposes** to demonstrate OOP and exchange mechanics.
+- Can be extended to include **auto order matching, multi-user support, and real-time market feeds**.
+
+---
+
+## 🏆 Acknowledgements
+
+- Inspired by **real cryptocurrency exchange systems**
+- Developed as part of an **Object-Oriented Programming specialization**
+
