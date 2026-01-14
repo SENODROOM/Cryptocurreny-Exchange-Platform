@@ -1,28 +1,31 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
+
+#include "CSVReader.h"
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
 
 class MerkelMain
 {
-    public:
-        MerkelMain();
-        /** Call this to start the sim */
-        void init();
-    private: 
-        void printMenu();
-        void printHelp();
-        void printMarketStats();
-        void enterAsk();
-        void enterBid();
-        void printWallet();
-        void gotoNextTimeframe();
-        int getUserOption();
-        void processUserOption(int userOption);
+public:
+    MerkelMain();
+    /** Call this to start the sim */
+    void init();
 
-        std::string currentTime;
+private:
+    void printMenu();
+    void printHelp();
+    void printMarketStats();
+    void enterAsk();
+    void enterBid();
+    void printWallet();
+    void gotoNextTimeframe();
+    int getUserOption();
+    void processUserOption(int userOption);
 
-        OrderBook orderBook{"20200317.csv"};
+    std::string currentTime;
 
+    OrderBook orderBook{"20200317.csv"};
 };

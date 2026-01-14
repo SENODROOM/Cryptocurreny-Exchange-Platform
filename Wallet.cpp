@@ -4,8 +4,6 @@
 
 Wallet::Wallet()
 {
-
-
 }
 
 void Wallet::insertCurrency(std::string type, double amount)
@@ -20,11 +18,12 @@ void Wallet::insertCurrency(std::string type, double amount)
     {
         balance = 0;
     }
-    else { // is there 
+    else
+    { // is there
         balance = currencies[type];
     }
-    balance += amount; 
-    currencies[type] = balance; 
+    balance += amount;
+    currencies[type] = balance;
 }
 
 bool Wallet::removeCurrency(std::string type, double amount)
@@ -32,22 +31,23 @@ bool Wallet::removeCurrency(std::string type, double amount)
     std::cout << "removeCurrencyMYK version" << std::endl;
     if (amount < 0)
     {
-        return false; 
+        return false;
     }
     if (currencies.count(type) == 0) // not there yet
     {
-        //std::cout << "No currency for " << type << std::endl;
+        // std::cout << "No currency for " << type << std::endl;
         return false;
     }
-    else { // is there - do  we have enough
-        if (containsCurrency(type, amount))// we have enough
+    else
+    {                                       // is there - do  we have enough
+        if (containsCurrency(type, amount)) // we have enough
         {
-            //std::cout << "Removing " << type << ": " << amount << std::endl;
+            // std::cout << "Removing " << type << ": " << amount << std::endl;
             currencies[type] -= amount;
             return true;
-        } 
+        }
         else // they have it but not enough.
-            return false; 
+            return false;
     }
 }
 
@@ -56,15 +56,14 @@ bool Wallet::containsCurrency(std::string type, double amount)
     std::cout << "containsCurrencyMYK version" << std::endl;
     if (currencies.count(type) == 0) // not there yet
         return false;
-    else 
+    else
         return currencies[type] >= amount;
-    
 }
 
 std::string Wallet::toString()
 {
     std::string s;
-    for (std::pair<std::string,double> pair : currencies)
+    for (std::pair<std::string, double> pair : currencies)
     {
         std::string currency = pair.first;
         double amount = pair.second;
@@ -73,9 +72,8 @@ std::string Wallet::toString()
     return s;
 }
 
-std::ostream& operator<<(std::ostream& os,  Wallet& wallet)
+std::ostream &operator<<(std::ostream &os, Wallet &wallet)
 {
     os << wallet.toString();
     return os;
 }
-
