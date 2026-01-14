@@ -77,3 +77,23 @@ std::ostream &operator<<(std::ostream &os, Wallet &wallet)
     os << wallet.toString();
     return os;
 }
+bool Wallet::canFulfillOrder(OrderBookEntry order)
+{
+    std::vector<std::string> currs = CSVReader::tokenise(order.product, '/');
+    if (order.orderType == OrderBookType::ask)
+    {
+        double amount = order.amount;
+        std::string currency = currs[0];
+        std::cout << "Wallet::canFulfillOrder " << currency << " : " << amount << std::endl;
+        return containsCurrency(currency, amount);
+    }
+    if (order.orderType == OrderBookType::bid)
+    {
+        double amount = order.amount * order.price;
+        std::string currency = currs[1];
+        std::cout << "Wallet::canFulfillOrder " << currency << " : " << amount << std::endl;
+        return containsCurrency(currency, amount);
+    }
+
+    return false;
+}

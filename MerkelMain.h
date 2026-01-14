@@ -2,10 +2,14 @@
 
 #include <iostream>
 #include <vector>
+#include <limits>
 
 #include "CSVReader.h"
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
+#include "Wallet.h"
+
+using namespace std;
 
 class MerkelMain
 {
@@ -25,7 +29,8 @@ private:
     int getUserOption();
     void processUserOption(int userOption);
 
-    std::string currentTime;
+    Wallet wallet{};
+    string currentTime;
 
     OrderBook orderBook{"20200317.csv"};
 };
