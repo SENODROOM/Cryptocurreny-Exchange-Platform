@@ -1,0 +1,45 @@
+📌 OrderBook.h / OrderBook.cpp
+
+Purpose: Manages all buy & sell orders
+
+Key functionalities:
+
+Store Orders
+
+All bids and asks are stored here
+
+Orders are grouped by:
+
+Product (e.g., BTC/USDT)
+
+Timestamp
+
+Order type (bid/ask)
+
+Filter Orders
+
+Get orders by:
+
+Type (bid or ask)
+
+Product
+
+Timestamp
+
+Price Calculations
+
+Highest price
+
+Lowest price
+
+Average price
+
+Order Matching (Very Important)
+
+Matches bids with asks
+
+Executes trades
+
+Generates sale records
+
+👉 This is the core exchange logic, just like a real trading engine.
