@@ -1,0 +1,21 @@
+📌 CSVReader.h / CSVReader.cpp
+
+Purpose: Load historical market data from CSV file
+
+Functionalities:
+
+Reads 20200317.csv
+
+Parses:
+
+Timestamp
+
+Product
+
+Price
+
+Amount
+
+Converts CSV rows into OrderBookEntry objects
+
+👉 This simulates real market data feeding into the exchange.

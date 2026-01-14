@@ -1,0 +1,19 @@
+📌 OrderBookEntry.h / OrderBookEntry.cpp
+
+Purpose: Represents a single order
+
+Each order contains:
+
+Price
+
+Amount
+
+Timestamp
+
+Product (BTC/USDT etc.)
+
+Order type (bid or ask)
+
+Username (e.g., simuser)
+
+👉 Think of this as one row in an exchange order book.

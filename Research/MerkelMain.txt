@@ -1,0 +1,55 @@
+📌 MerkelMain.h / MerkelMain.cpp
+
+Purpose: Core controller (brain of the platform)
+
+This class:
+
+Displays the menu
+
+Handles user input
+
+Controls time progression
+
+Connects all other components together
+
+Main functionalities inside MerkelMain:
+
+Display Menu
+
+1: Print help
+2: Print market stats
+3: Make an ask
+4: Make a bid
+5: Print wallet
+6: Continue
+
+
+User Command Handling
+
+Reads user choice
+
+Calls corresponding function
+
+Market Statistics
+
+Highest price
+
+Lowest price
+
+Price range per product
+
+Order Creation
+
+Creates bid or ask orders
+
+Adds them to the order book
+
+Time Step Simulation
+
+Matches orders
+
+Updates wallet
+
+Moves to next timestamp
+
+👉 This class acts like the exchange engine controller.

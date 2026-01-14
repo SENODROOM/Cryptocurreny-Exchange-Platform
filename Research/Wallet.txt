@@ -1,0 +1,25 @@
+📌 Wallet.h / Wallet.cpp
+
+Purpose: Manages user funds
+
+Wallet functionalities:
+
+Store Balances
+
+BTC, USDT, etc.
+
+Check Funds
+
+Ensures user has enough balance before placing an order
+
+Process Sales
+
+Updates balances after trades
+
+Deducts or adds funds accordingly
+
+Display Wallet
+
+Shows current holdings
+
+👉 This simulates user account balance management.

@@ -1,0 +1,9 @@
+📌 main.cpp
+
+Purpose: Program entry point
+
+Creates an instance of MerkelMain
+
+Starts the exchange simulation loop
+
+👉 Very minimal – just bootstraps the program.
