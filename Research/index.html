@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Trading Simulator Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .file-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .file-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .keyword { color: #c678dd; }
+        .type { color: #e5c07b; }
+        .function { color: #61afef; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .explanation h4 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .architecture {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .flow-diagram {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .flow-box {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .arrow {
+            color: #667eea;
+            font-size: 2em;
+            display: block;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Cryptocurrency Trading Simulator</h1>
+            <p>Comprehensive C++ Code Analysis & Documentation</p>
+        </header>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+            <button class="nav-btn" onclick="showSection('orderbook')">OrderBook</button>
+            <button class="nav-btn" onclick="showSection('csv')">CSV Reader</button>
+            <button class="nav-btn" onclick="showSection('wallet')">Wallet</button>
+            <button class="nav-btn" onclick="showSection('main')">Main & MerkelMain</button>
+        </div>
+
+        <div class="content">
+            <!-- OVERVIEW SECTION -->
+            <div id="overview" class="file-section active">
+                <h2>📊 Project Overview</h2>
+                
+                <div class="architecture">
+                    <h3 style="color: white;">System Architecture</h3>
+                    <p>This is a cryptocurrency exchange trading simulator built in C++. It simulates a real-time order matching system where users can place bids and asks for various cryptocurrency pairs.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>📈 Order Matching</h4>
+                        <p>Implements a sophisticated bid-ask matching algorithm that pairs buyers with sellers based on price priority</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💰 Wallet Management</h4>
+                        <p>Tracks user cryptocurrency balances and validates transactions before execution</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📁 CSV Processing</h4>
+                        <p>Reads historical market data from CSV files to populate the order book</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⏰ Time Simulation</h4>
+                        <p>Advances through timestamps to simulate real market progression</p>
+                    </div>
+                </div>
+
+                <div class="flow-diagram">
+                    <h3 style="color: #667eea;">Application Flow</h3>
+                    <div class="flow-box">User Input</div>
+                    <div class="arrow">⬇</div>
+                    <div class="flow-box">MerkelMain (UI Controller)</div>
+                    <div class="arrow">⬇</div>
+                    <div class="flow-box">OrderBook (Data Management)</div>
+                    <div class="arrow">⬇</div>
+                    <div class="flow-box">Wallet (Balance Verification)</div>
+                    <div class="arrow">⬇</div>
+                    <div class="flow-box">Order Matching Engine</div>
+                </div>
+
+                <h3>Core Components</h3>
+                <ul>
+                    <li><strong>OrderBookEntry:</strong> Represents a single order (bid/ask) with price, amount, timestamp, and product</li>
+                    <li><strong>OrderBook:</strong> Manages all orders, handles matching logic, and tracks market state</li>
+                    <li><strong>Wallet:</strong> Manages user's cryptocurrency balances and validates orders</li>
+                    <li><strong>CSVReader:</strong> Parses CSV files to load historical market data</li>
+                    <li><strong>MerkelMain:</strong> User interface and main application controller</li>
+                </ul>
+            </div>
+
+            <!-- ORDERBOOK SECTION -->
+            <div id="orderbook" class="file-section">
+                <h2>📚 OrderBook System</h2>
+
+                <h3>OrderBookEntry.h - Data Structure</h3>
+                <div class="code-block">
+<span class="keyword">enum class</span> <span class="type">OrderBookType</span>
+{
+    bid,      <span class="comment">// Buy order</span>
+    ask,      <span class="comment">// Sell order</span>
+    unknown,
+    sale      <span class="comment">// Completed transaction</span>
+};
+                </div>
+
+                <div class="explanation">
+                    <h4>📝 Explanation</h4>
+                    <p>The <span class="highlight">OrderBookType</span> enum defines four states:</p>
+                    <ul>
+                        <li><strong>bid:</strong> A buy order (user wants to purchase cryptocurrency)</li>
+                        <li><strong>ask:</strong> A sell order (user wants to sell cryptocurrency)</li>
+                        <li><strong>sale:</strong> A completed transaction between a bid and ask</li>
+                        <li><strong>unknown:</strong> Error state for invalid order types</li>
+                    </ul>
+                </div>
+
+                <h3>OrderBookEntry Class</h3>
+                <div class="code-block">
+<span class="keyword">class</span> <span class="type">OrderBookEntry</span>
+{
+<span class="keyword">public:</span>
+    <span class="function">OrderBookEntry</span>(<span class="type">double</span> _price, <span class="type">double</span> _amount, 
+                   <span class="type">string</span> _timestamp, <span class="type">string</span> _product,
+                   <span class="type">OrderBookType</span> _orderType);
+
+    <span class="comment">// Comparison functions for sorting</span>
+    <span class="keyword">static bool</span> <span class="function">compareByTimestamp</span>(<span class="type">OrderBookEntry</span> &e1, <span class="type">OrderBookEntry</span> &e2);
+    <span class="keyword">static bool</span> <span class="function">compareByPriceAsc</span>(<span class="type">OrderBookEntry</span> &e1, <span class="type">OrderBookEntry</span> &e2);
+    <span class="keyword">static bool</span> <span class="function">compareByPriceDesc</span>(<span class="type">OrderBookEntry</span> &e1, <span class="type">OrderBookEntry</span> &e2);
+
+    <span class="type">double</span> price;      <span class="comment">// Price per unit</span>
+    <span class="type">double</span> amount;     <span class="comment">// Quantity</span>
+    <span class="type">string</span> timestamp;  <span class="comment">// When order was placed</span>
+    <span class="type">string</span> product;    <span class="comment">// e.g., "BTC/USDT"</span>
+    <span class="type">OrderBookType</span> orderType;
+};
+                </div>
+
+                <div class="explanation">
+                    <h4>🔍 Key Features</h4>
+                    <ul>
+                        <li><strong>Static Comparators:</strong> Used with std::sort to organize orders by timestamp or price</li>
+                        <li><strong>compareByPriceAsc:</strong> Sorts asks from lowest to highest (sellers willing to accept less go first)</li>
+                        <li><strong>compareByPriceDesc:</strong> Sorts bids from highest to lowest (buyers willing to pay more go first)</li>
+                        <li><strong>Product Format:</strong> Uses "BASE/QUOTE" notation (e.g., BTC/USDT means buying BTC with USDT)</li>
+                    </ul>
+                </div>
+
+                <h3>OrderBook Class - Core Matching Engine</h3>
+                <div class="code-block">
+<span class="type">std::vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; <span class="function">matchAsksToBids</span>(
+    <span class="type">string</span> product, <span class="type">string</span> timestamp)
+{
+    <span class="comment">// Get all sell orders for this product at this time</span>
+    <span class="type">vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; asks = <span class="function">getOrders</span>(
+        OrderBookType::ask, product, timestamp);
+    
+    <span class="comment">// Get all buy orders</span>
+    <span class="type">vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; bids = <span class="function">getOrders</span>(
+        OrderBookType::bid, product, timestamp);
+    
+    <span class="comment">// Sort asks lowest first (best sellers)</span>
+    std::<span class="function">sort</span>(asks.begin(), asks.end(), 
+              OrderBookEntry::compareByPriceAsc);
+    
+    <span class="comment">// Sort bids highest first (best buyers)</span>
+    std::<span class="function">sort</span>(bids.begin(), bids.end(), 
+              OrderBookEntry::compareByPriceDesc);
+                </div>
+
+                <div class="explanation">
+                    <h4>⚙️ Matching Algorithm Logic</h4>
+                    <p>The algorithm implements <span class="highlight">price-time priority</span>:</p>
+                    <ol>
+                        <li>Sort asks (sells) from lowest price to highest</li>
+                        <li>Sort bids (buys) from highest price to lowest</li>
+                        <li>Try to match the best buyer with the best seller</li>
+                        <li>If bid price ≥ ask price, a trade can occur!</li>
+                    </ol>
+                </div>
+
+                <div class="code-block">
+    <span class="keyword">for</span> (<span class="type">OrderBookEntry</span> &ask : asks) {
+        <span class="keyword">for</span> (<span class="type">OrderBookEntry</span> &bid : bids) {
+            <span class="keyword">if</span> (bid.price >= ask.price) {
+                <span class="comment">// Create sale at the ask price (seller's price)</span>
+                <span class="type">OrderBookEntry</span> sale{ask.price, <span class="string">0</span>, timestamp, 
+                                    product, OrderBookType::sale};
+                
+                <span class="comment">// Case 1: Exact match</span>
+                <span class="keyword">if</span> (bid.amount == ask.amount) {
+                    sale.amount = ask.amount;
+                    sales.<span class="function">push_back</span>(sale);
+                    bid.amount = <span class="string">0</span>;
+                    <span class="keyword">break</span>; <span class="comment">// Move to next ask</span>
+                }
+                
+                <span class="comment">// Case 2: Bid is larger, ask completely filled</span>
+                <span class="keyword">if</span> (bid.amount > ask.amount) {
+                    sale.amount = ask.amount;
+                    sales.<span class="function">push_back</span>(sale);
+                    bid.amount -= ask.amount; <span class="comment">// Partial fill of bid</span>
+                    <span class="keyword">break</span>; <span class="comment">// Move to next ask</span>
+                }
+                
+                <span class="comment">// Case 3: Ask is larger, bid completely filled</span>
+                <span class="keyword">if</span> (bid.amount < ask.amount) {
+                    sale.amount = bid.amount;
+                    sales.<span class="function">push_back</span>(sale);
+                    ask.amount -= bid.amount; <span class="comment">// Partial fill of ask</span>
+                    bid.amount = <span class="string">0</span>;
+                    <span class="keyword">continue</span>; <span class="comment">// Try next bid for remaining ask</span>
+                }
+            }
+        }
+    }
+    <span class="keyword">return</span> sales;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>💡 Trading Logic Examples</h4>
+                    <p><strong>Example 1 - Perfect Match:</strong></p>
+                    <ul>
+                        <li>Ask: Sell 5 BTC at $40,000</li>
+                        <li>Bid: Buy 5 BTC at $41,000</li>
+                        <li>Result: Sale of 5 BTC at $40,000 (seller's price)</li>
+                    </ul>
+                    <p><strong>Example 2 - Partial Fill (Bid Larger):</strong></p>
+                    <ul>
+                        <li>Ask: Sell 3 BTC at $40,000</li>
+                        <li>Bid: Buy 10 BTC at $41,000</li>
+                        <li>Result: Sale of 3 BTC at $40,000, bid remains for 7 BTC</li>
+                    </ul>
+                    <p><strong>Example 3 - Partial Fill (Ask Larger):</strong></p>
+                    <ul>
+                        <li>Ask: Sell 10 BTC at $40,000</li>
+                        <li>Bid: Buy 3 BTC at $41,000</li>
+                        <li>Result: Sale of 3 BTC at $40,000, ask remains for 7 BTC</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CSV READER SECTION -->
+            <div id="csv" class="file-section">
+                <h2>📁 CSV Reader - Data Import System</h2>
+
+                <h3>Main Reading Function</h3>
+                <div class="code-block">
+<span class="type">std::vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; <span class="function">readCSV</span>(<span class="type">std::string</span> csvFilename)
+{
+    <span class="type">std::vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; entries;
+    <span class="type">std::ifstream</span> csvFile{csvFilename};
+    <span class="type">std::string</span> line;
+    
+    <span class="keyword">if</span> (csvFile.<span class="function">is_open</span>()) {
+        <span class="keyword">while</span> (std::<span class="function">getline</span>(csvFile, line)) {
+            <span class="keyword">try</span> {
+                <span class="type">OrderBookEntry</span> obe = <span class="function">stringsToOBE</span>(<span class="function">tokenise</span>(line, <span class="string">','</span>));
+                entries.<span class="function">push_back</span>(obe);
+            }
+            <span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type">std::exception</span> &e) {
+                <span class="type">std::cout</span> << <span class="string">"CSVReader::readCSV bad data"</span> << <span class="type">std::endl</span>;
+            }
+        }
+    }
+    
+    <span class="type">std::cout</span> << <span class="string">"CSVReader::readCSV read "</span> << entries.<span class="function">size</span>() 
+              << <span class="string">" entries"</span> << <span class="type">std::endl</span>;
+    <span class="keyword">return</span> entries;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>📖 How It Works</h4>
+                    <ol>
+                        <li>Opens the CSV file using <span class="highlight">ifstream</span></li>
+                        <li>Reads each line of the file</li>
+                        <li>Tokenizes (splits) the line into fields using commas</li>
+                        <li>Converts the tokens into an OrderBookEntry object</li>
+                        <li>Error handling: If any line is malformed, it's skipped with an error message</li>
+                        <li>Returns all successfully parsed entries</li>
+                    </ol>
+                </div>
+
+                <h3>Tokenization Function</h3>
+                <div class="code-block">
+<span class="type">std::vector</span>&lt;<span class="type">std::string</span>&gt; <span class="function">tokenise</span>(<span class="type">std::string</span> csvLine, <span class="type">char</span> separator)
+{
+    <span class="type">std::vector</span>&lt;<span class="type">std::string</span>&gt; tokens;
+    <span class="type">signed int</span> start, end;
+    <span class="type">std::string</span> token;
+    
+    start = csvLine.<span class="function">find_first_not_of</span>(separator, <span class="string">0</span>);
+    
+    <span class="keyword">do</span> {
+        end = csvLine.<span class="function">find_first_of</span>(separator, start);
+        
+        <span class="keyword">if</span> (start == csvLine.<span class="function">length</span>() || start == end)
+            <span class="keyword">break</span>;
+        
+        <span class="keyword">if</span> (end >= <span class="string">0</span>)
+            token = csvLine.<span class="function">substr</span>(start, end - start);
+        <span class="keyword">else</span>
+            token = csvLine.<span class="function">substr</span>(start, csvLine.<span class="function">length</span>() - start);
+        
+        tokens.<span class="function">push_back</span>(token);
+        start = end + <span class="string">1</span>;
+    } <span class="keyword">while</span> (end > <span class="string">0</span>);
+    
+    <span class="keyword">return</span> tokens;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>✂️ Tokenization Process</h4>
+                    <p>This function splits a CSV line like:</p>
+                    <code style="background: #282c34; color: #98c379; padding: 5px; border-radius: 5px; display: block; margin: 10px 0;">
+                        2020/03/17 17:01:24,BTC/USDT,ask,9500.50,0.5
+                    </code>
+                    <p>Into separate tokens:</p>
+                    <ul>
+                        <li>tokens[0] = "2020/03/17 17:01:24" (timestamp)</li>
+                        <li>tokens[1] = "BTC/USDT" (product)</li>
+                        <li>tokens[2] = "ask" (order type)</li>
+                        <li>tokens[3] = "9500.50" (price)</li>
+                        <li>tokens[4] = "0.5" (amount)</li>
+                    </ul>
+                </div>
+
+                <h3>String to OrderBookEntry Conversion</h3>
+                <div class="code-block">
+<span class="type">OrderBookEntry</span> <span class="function">stringsToOBE</span>(<span class="type">std::vector</span>&lt;<span class="type">std::string</span>&gt; tokens)
+{
+    <span class="type">double</span> price, amount;
+    
+    <span class="keyword">if</span> (tokens.<span class="function">size</span>() != <span class="string">5</span>) {
+        <span class="type">std::cout</span> << <span class="string">"Bad line"</span> << <span class="type">std::endl</span>;
+        <span class="keyword">throw</span> <span class="type">std::exception</span>{};
+    }
+    
+    <span class="keyword">try</span> {
+        price = <span class="type">std</span>::<span class="function">stod</span>(tokens[<span class="string">3</span>]);   <span class="comment">// Convert string to double</span>
+        amount = <span class="type">std</span>::<span class="function">stod</span>(tokens[<span class="string">4</span>]);  <span class="comment">// Convert string to double</span>
+    }
+    <span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type">std::exception</span> &e) {
+        <span class="type">std::cout</span> << <span class="string">"Bad float!"</span> << <span class="type">std::endl</span>;
+        <span class="keyword">throw</span>;
+    }
+    
+    <span class="type">OrderBookEntry</span> obe{price, amount, tokens[<span class="string">0</span>], tokens[<span class="string">1</span>],
+                       OrderBookEntry::<span class="function">stringToOrderBookType</span>(tokens[<span class="string">2</span>])};
+    
+    <span class="keyword">return</span> obe;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>🔄 Conversion Process</h4>
+                    <ul>
+                        <li><strong>Validation:</strong> Ensures exactly 5 tokens exist</li>
+                        <li><strong>Type Conversion:</strong> Uses std::stod to convert price/amount strings to doubles</li>
+                        <li><strong>Error Handling:</strong> Catches conversion failures (e.g., "abc" → double)</li>
+                        <li><strong>Object Creation:</strong> Constructs OrderBookEntry with parsed data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- WALLET SECTION -->
+            <div id="wallet" class="file-section">
+                <h2>💼 Wallet - Balance Management System</h2>
+
+                <h3>Currency Storage</h3>
+                <div class="code-block">
+<span class="keyword">class</span> <span class="type">Wallet</span>
+{
+<span class="keyword">private:</span>
+    <span class="type">std::map</span>&lt;<span class="type">std::string</span>, <span class="type">double</span>&gt; currencies;
+    <span class="comment">// Key: Currency name (e.g., "BTC", "USDT")</span>
+    <span class="comment">// Value: Balance amount</span>
+};
+                </div>
+
+                <div class="explanation">
+                    <h4>🗂️ Data Structure</h4>
+                    <p>The wallet uses a <span class="highlight">std::map</span> to store balances:</p>
+                    <ul>
+                        <li>Key-value pairs allow quick lookup: O(log n)</li>
+                        <li>Example: {"BTC": 1.5, "USDT": 50000.0, "ETH": 10.0}</li>
+                        <li>Automatically handles new currencies when inserted</li>
+                    </ul>
+                </div>
+
+                <h3>Insert Currency Function</h3>
+                <div class="code-block">
+<span class="type">void</span> <span class="function">insertCurrency</span>(<span class="type">std::string</span> type, <span class="type">double</span> amount)
+{
+    <span class="type">double</span> balance;
+    
+    <span class="keyword">if</span> (amount < <span class="string">0</span>) {
+        <span class="keyword">throw</span> <span class="type">std::exception</span>{};  <span class="comment">// Can't add negative amounts</span>
+    }
+    
+    <span class="keyword">if</span> (currencies.<span class="function">count</span>(type) == <span class="string">0</span>) {  <span class="comment">// Currency not in wallet yet</span>
+        balance = <span class="string">0</span>;
+    }
+    <span class="keyword">else</span> {  <span class="comment">// Currency exists, get current balance</span>
+        balance = currencies[type];
+    }
+    
+    balance += amount;  <span class="comment">// Add the new amount</span>
+    currencies[type] = balance;  <span class="comment">// Update the wallet</span>
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>➕ Adding Funds</h4>
+                    <p>This function safely adds cryptocurrency to the wallet:</p>
+                    <ul>
+                        <li><strong>Validation:</strong> Rejects negative amounts</li>
+                        <li><strong>New Currency:</strong> If currency doesn't exist, starts at 0</li>
+                        <li><strong>Existing Currency:</strong> Adds to current balance</li>
+                        <li><strong>Example:</strong> insertCurrency("BTC", 0.5) adds 0.5 BTC</li>
+                    </ul>
+                </div>
+
+                <h3>Remove Currency Function</h3>
+                <div class="code-block">
+<span class="type">bool</span> <span class="function">removeCurrency</span>(<span class="type">std::string</span> type, <span class="type">double</span> amount)
+{
+    <span class="keyword">if</span> (amount < <span class="string">0</span>) {
+        <span class="keyword">return false</span>;  <span class="comment">// Can't remove negative amounts</span>
+    }
+    
+    <span class="keyword">if</span> (currencies.<span class="function">count</span>(type) == <span class="string">0</span>) {  <span class="comment">// Currency not in wallet</span>
+        <span class="keyword">return false</span>;
+    }
+    <span class="keyword">else</span> {
+        <span class="keyword">if</span> (<span class="function">containsCurrency</span>(type, amount)) {  <span class="comment">// Enough balance?</span>
+            currencies[type] -= amount;  <span class="comment">// Deduct amount</span>
+            <span class="keyword">return true</span>;
+        }
+        <span class="keyword">else</span> {
+            <span class="keyword">return false</span>;  <span class="comment">// Insufficient funds</span>
+        }
+    }
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>➖ Removing Funds</h4>
+                    <p>This function safely removes cryptocurrency with multiple checks:</p>
+                    <ul>
+                        <li><strong>Negative Check:</strong> Prevents removing negative amounts</li>
+                        <li><strong>Existence Check:</strong> Verifies currency exists in wallet</li>
+                        <li><strong>Balance Check:</strong> Ensures sufficient funds before deduction</li>
+                        <li><strong>Returns:</strong> true if successful, false if failed</li>
+                    </ul>
+                </div>
+
+                <h3>Order Fulfillment Validation</h3>
+                <div class="code-block">
+<span class="type">bool</span> <span class="function">canFulfillOrder</span>(<span class="type">OrderBookEntry</span> order)
+{
+    <span class="type">std::vector</span>&lt;<span class="type">std::string</span>&gt; currs = CSVReader::<span class="function">tokenise</span>(order.product, <span class="string">'/'</span>);
+    
+    <span class="keyword">if</span> (order.orderType == OrderBookType::ask) {
+        <span class="comment">// Selling: Need the base currency (e.g., BTC in BTC/USDT)</span>
+        <span class="type">double</span> amount = order.amount;
+        <span class="type">std::string</span> currency = currs[<span class="string">0</span>];
+        <span class="keyword">return</span> <span class="function">containsCurrency</span>(currency, amount);
+    }
+    
+    <span class="keyword">if</span> (order.orderType == OrderBookType::bid) {
+        <span class="comment">// Buying: Need the quote currency (e.g., USDT in BTC/USDT)</span>
+        <span class="type">double</span> amount = order.amount * order.price;  <span class="comment">// Total cost</span>
+        <span class="type">std::string</span> currency = currs[<span class="string">1</span>];
+        <span class="keyword">return</span> <span class="function">containsCurrency</span>(currency, amount);
+    }
+    
+    <span class="keyword">return false</span>;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>✅ Order Validation Logic</h4>
+                    <p><strong>For ASK (Sell) Orders:</strong></p>
+                    <ul>
+                        <li>Product: "BTC/USDT", Amount: 0.5</li>
+                        <li>Need: 0.5 BTC (base currency)</li>
+                        <li>Check: Do we have 0.5 BTC in wallet?</li>
+                    </ul>
+                    <p><strong>For BID (Buy) Orders:</strong></p>
+                    <ul>
+                        <li>Product: "BTC/USDT", Price: $40,000, Amount: 0.5</li>
+                        <li>Need: 0.5 × $40,000 = $20,000 USDT (quote currency)</li>
+                        <li>Check: Do we have $20,000 USDT in wallet?</li>
+                    </ul>
+                </div>
+
+                <h3>Wallet Display Function</h3>
+                <div class="code-block">
+<span class="type">std::string</span> <span class="function">toString</span>()
+{
+    <span class="type">std::string</span> s;
+    <span class="keyword">for</span> (<span class="type">std::pair</span>&lt;<span class="type">std::string</span>, <span class="type">double</span>&gt; pair : currencies) {
+        <span class="type">std::string</span> currency = pair.first;
+        <span class="type">double</span> amount = pair.second;
+        s += currency + <span class="string">" : "</span> + <span class="type">std</span>::<span class="function">to_string</span>(amount) + <span class="string">"\n"</span>;
+    }
+    <span class="keyword">return</span> s;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>📊 Wallet Display</h4>
+                    <p>Creates a formatted string showing all balances:</p>
+                    <code style="background: #282c34; color: #98c379; padding: 10px; border-radius: 5px; display: block; margin: 10px 0;">
+BTC : 1.500000<br>
+ETH : 10.000000<br>
+USDT : 50000.000000
+                    </code>
+                </div>
+            </div>
+
+            <!-- MAIN SECTION -->
+            <div id="main" class="file-section">
+                <h2>🎮 Main & MerkelMain - User Interface</h2>
+
+                <h3>Application Entry Point</h3>
+                <div class="code-block">
+<span class="type">int</span> <span class="function">main</span>()
+{
+    <span class="type">MerkelMain</span> app{};
+    app.<span class="function">init</span>();
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>🚀 Program Start</h4>
+                    <p>Simple and clean:</p>
+                    <ul>
+                        <li>Creates a MerkelMain instance</li>
+                        <li>Calls init() to start the interactive simulation</li>
+                        <li>Everything else is handled by MerkelMain</li>
+                    </ul>
+                </div>
+
+                <h3>Main Loop - init() Function</h3>
+                <div class="code-block">
+<span class="type">void</span> <span class="function">init</span>()
+{
+    <span class="type">int</span> input;
+    currentTime = orderBook.<span class="function">getEarliestTime</span>();
+    
+    <span class="keyword">while</span> (<span class="string">true</span>) {
+        <span class="function">printMenu</span>();
+        input = <span class="function">getUserOption</span>();
+        <span class="function">processUserOption</span>(input);
+    }
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>🔄 Infinite Loop</h4>
+                    <p>The application runs continuously:</p>
+                    <ol>
+                        <li>Initialize time to earliest timestamp in data</li>
+                        <li>Display menu options to user</li>
+                        <li>Get user's choice (1-6)</li>
+                        <li>Process the choice</li>
+                        <li>Repeat forever (until program closed)</li>
+                    </ol>
+                </div>
+
+                <h3>Menu Display</h3>
+                <div class="code-block">
+<span class="type">void</span> <span class="function">printMenu</span>()
+{
+    <span class="type">cout</span> << <span class="string">"1: Print help"</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"2: Print exchange stats"</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"3: Make an ask"</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"4: Make a bid"</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"5: Print wallet"</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"6: Continue"</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"=============="</span> << <span class="type">endl</span>;
+    <span class="type">cout</span> << <span class="string">"Current time is: "</span> << currentTime << <span class="type">endl</span>;
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>📋 Menu Options</h4>
+                    <ul>
+                        <li><strong>Option 1:</strong> Help - Explains the game objective</li>
+                        <li><strong>Option 2:</strong> Market Stats - Shows current prices and order counts</li>
+                        <li><strong>Option 3:</strong> Place Ask - Sell cryptocurrency</li>
+                        <li><strong>Option 4:</strong> Place Bid - Buy cryptocurrency</li>
+                        <li><strong>Option 5:</strong> View Wallet - Check balances</li>
+                        <li><strong>Option 6:</strong> Advance Time - Move to next timestamp</li>
+                    </ul>
+                </div>
+
+                <h3>Market Statistics Display</h3>
+                <div class="code-block">
+<span class="type">void</span> <span class="function">printMarketStats</span>()
+{
+    <span class="keyword">for</span> (<span class="type">string</span> <span class="keyword">const</span> &p : orderBook.<span class="function">getKnownProducts</span>()) {
+        <span class="type">cout</span> << <span class="string">"Product: "</span> << p << <span class="type">endl</span>;
+        
+        <span class="type">vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; entries = orderBook.<span class="function">getOrders</span>(
+            OrderBookType::ask, p, currentTime);
+        
+        <span class="type">cout</span> << <span class="string">"Asks seen: "</span> << entries.<span class="function">size</span>() << <span class="type">endl</span>;
+        <span class="type">cout</span> << <span class="string">"Max ask: "</span> << OrderBook::<span class="function">getHighPrice</span>(entries) << <span class="type">endl</span>;
+        <span class="type">cout</span> << <span class="string">"Min ask: "</span> << OrderBook::<span class="function">getLowPrice</span>(entries) << <span class="type">endl</span>;
+    }
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>📈 Market Analysis</h4>
+                    <p>For each trading pair (BTC/USDT, ETH/USDT, etc.):</p>
+                    <ul>
+                        <li>Shows how many sell orders exist</li>
+                        <li>Displays highest and lowest asking prices</li>
+                        <li>Helps user make informed trading decisions</li>
+                        <li>Example output:<br>
+                        <code style="background: #282c34; color: #98c379; padding: 5px;">
+Product: BTC/USDT<br>
+Asks seen: 25<br>
+Max ask: 41500.00<br>
+Min ask: 39800.00
+                        </code>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>Placing an Ask (Sell Order)</h3>
+                <div class="code-block">
+<span class="type">void</span> <span class="function">enterAsk</span>()
+{
+    <span class="type">cout</span> << <span class="string">"Make an ask - enter: product,price,amount"</span> << <span class="type">endl</span>;
+    <span class="type">string</span> input;
+    <span class="function">getline</span>(<span class="type">cin</span>, input);
+    
+    <span class="type">vector</span>&lt;<span class="type">string</span>&gt; tokens = CSVReader::<span class="function">tokenise</span>(input, <span class="string">','</span>);
+    
+    <span class="keyword">if</span> (tokens.<span class="function">size</span>() != <span class="string">3</span>) {
+        <span class="type">cout</span> << <span class="string">"Bad input!"</span> << <span class="type">endl</span>;
+    }
+    <span class="keyword">else</span> {
+        <span class="keyword">try</span> {
+            <span class="type">OrderBookEntry</span> obe = CSVReader::<span class="function">stringsToOBE</span>(
+                tokens[<span class="string">1</span>],  <span class="comment">// price</span>
+                tokens[<span class="string">2</span>],  <span class="comment">// amount</span>
+                currentTime,
+                tokens[<span class="string">0</span>],  <span class="comment">// product</span>
+                OrderBookType::ask);
+            
+            <span class="keyword">if</span> (wallet.<span class="function">canFulfillOrder</span>(obe)) {
+                <span class="type">cout</span> << <span class="string">"Wallet looks good."</span> << <span class="type">endl</span>;
+                orderBook.<span class="function">insertOrder</span>(obe);
+            }
+            <span class="keyword">else</span> {
+                <span class="type">cout</span> << <span class="string">"Insufficient funds."</span> << <span class="type">endl</span>;
+            }
+        }
+        <span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type">exception</span> &e) {
+            <span class="type">cout</span> << <span class="string">"Bad input"</span> << <span class="type">endl</span>;
+        }
+    }
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>💰 Selling Process</h4>
+                    <p><strong>User Input Format:</strong> <code style="background: #fff3cd; padding: 3px 8px; border-radius: 3px;">ETH/BTC,200,0.5</code></p>
+                    <ul>
+                        <li>Product: ETH/BTC</li>
+                        <li>Price: 200 (BTC per ETH)</li>
+                        <li>Amount: 0.5 ETH</li>
+                    </ul>
+                    <p><strong>Validation Steps:</strong></p>
+                    <ol>
+                        <li>Parse input into 3 tokens</li>
+                        <li>Create OrderBookEntry object</li>
+                        <li>Check wallet has 0.5 ETH</li>
+                        <li>If yes, add order to book</li>
+                        <li>If no, reject with error message</li>
+                    </ol>
+                </div>
+
+                <h3>Time Advancement & Order Matching</h3>
+                <div class="code-block">
+<span class="type">void</span> <span class="function">gotoNextTimeframe</span>()
+{
+    <span class="type">cout</span> << <span class="string">"Going to next time frame."</span> << <span class="type">endl</span>;
+    
+    <span class="keyword">for</span> (<span class="type">string</span> &p : orderBook.<span class="function">getKnownProducts</span>()) {
+        <span class="type">cout</span> << <span class="string">"matching "</span> << p << <span class="type">endl</span>;
+        
+        <span class="type">vector</span>&lt;<span class="type">OrderBookEntry</span>&gt; sales = 
+            orderBook.<span class="function">matchAsksToBids</span>(p, currentTime);
+        
+        <span class="type">cout</span> << <span class="string">"Sales: "</span> << sales.<span class="function">size</span>() << <span class="type">endl</span>;
+        
+        <span class="keyword">for</span> (<span class="type">OrderBookEntry</span> &sale : sales) {
+            <span class="type">cout</span> << <span class="string">"Sale price: "</span> << sale.price 
+                      << <span class="string">" amount "</span> << sale.amount << <span class="type">endl</span>;
+        }
+    }
+    
+    currentTime = orderBook.<span class="function">getNextTime</span>(currentTime);
+}
+                </div>
+
+                <div class="explanation">
+                    <h4>⏰ Time Progression</h4>
+                    <p>When user chooses option 6:</p>
+                    <ol>
+                        <li>For each trading pair (BTC/USDT, ETH/USDT, etc.)</li>
+                        <li>Run the matching algorithm</li>
+                        <li>Execute all possible trades</li>
+                        <li>Display completed sales</li>
+                        <li>Move to next timestamp</li>
+                        <li>If at end of data, wrap back to beginning</li>
+                    </ol>
+                    <p>This simulates the passage of time in the market!</p>
+                </div>
+
+                <h3>Member Variables</h3>
+                <div class="code-block">
+<span class="keyword">class</span> <span class="type">MerkelMain</span>
+{
+<span class="keyword">private:</span>
+    <span class="type">Wallet</span> wallet{};                    <span class="comment">// User's cryptocurrency wallet</span>
+    <span class="type">string</span> currentTime;                <span class="comment">// Current simulation timestamp</span>
+    <span class="type">OrderBook</span> orderBook{<span class="string">"20200317.csv"</span>};  <span class="comment">// Market data from CSV</span>
+};
+                </div>
+
+                <div class="explanation">
+                    <h4>🏗️ Application State</h4>
+                    <ul>
+                        <li><strong>wallet:</strong> Tracks user's balances (initially empty)</li>
+                        <li><strong>currentTime:</strong> Current position in market timeline</li>
+                        <li><strong>orderBook:</strong> All market orders loaded from CSV file</li>
+                    </ul>
+                    <p>These three components work together to create the complete trading simulation!</p>
+                </div>
+
+                <div class="architecture">
+                    <h3 style="color: white;">🎯 Complete System Flow</h3>
+                    <ol style="color: white;">
+                        <li><strong>Initialization:</strong> Load CSV data → Populate OrderBook → Set starting time</li>
+                        <li><strong>User Loop:</strong> Display menu → Get input → Process action</li>
+                        <li><strong>Trading:</strong> Validate wallet → Place order → Wait for matching</li>
+                        <li><strong>Matching:</strong> Advance time → Match bids/asks → Execute trades → Update wallets</li>
+                        <li><strong>Repeat:</strong> Continue simulation indefinitely</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💻 C++ Cryptocurrency Trading Simulator - Complete Code Analysis</p>
+            <p style="opacity: 0.8; margin-top: 10px;">Built with modern C++ | Object-Oriented Design | Real-time Order Matching</p>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.file-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Activate clicked button
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
