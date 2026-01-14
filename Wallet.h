@@ -17,6 +17,7 @@ public:
     std::string toString();
     friend std::ostream &operator<<(std::ostream &os, Wallet &wallet);
     bool canFulfillOrder(OrderBookEntry order);
+    void processSale(OrderBookEntry &sale);
 
 private:
     std::map<std::string, double> currencies;
