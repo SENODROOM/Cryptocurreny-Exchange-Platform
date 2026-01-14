@@ -4,37 +4,37 @@ CSVReader::CSVReader()
 {
 }
 
-std::vector<OrderBookEntry> CSVReader::readCSV(std::string csvFilename)
+vector<OrderBookEntry> CSVReader::readCSV(string csvFilename)
 {
-    std::vector<OrderBookEntry> entries;
+    vector<OrderBookEntry> entries;
 
-    std::ifstream csvFile{csvFilename};
-    std::string line;
+    ifstream csvFile{csvFilename};
+    string line;
     if (csvFile.is_open())
     {
-        while (std::getline(csvFile, line))
+        while (getline(csvFile, line))
         {
             try
             {
                 OrderBookEntry obe = stringsToOBE(tokenise(line, ','));
                 entries.push_back(obe);
             }
-            catch (const std::exception &e)
+            catch (const exception &e)
             {
-                std::cout << "CSVReader::readCSV bad data" << std::endl;
+                cout << "CSVReader::readCSV bad data" << endl;
             }
         } // end of while
     }
 
-    std::cout << "CSVReader::readCSV read " << entries.size() << " entries" << std::endl;
+    cout << "CSVReader::readCSV read " << entries.size() << " entries" << endl;
     return entries;
 }
 
-std::vector<std::string> CSVReader::tokenise(std::string csvLine, char separator)
+vector<string> CSVReader::tokenise(string csvLine, char separator)
 {
-    std::vector<std::string> tokens;
+    vector<string> tokens;
     signed int start, end;
-    std::string token;
+    string token;
     start = csvLine.find_first_not_of(separator, 0);
     do
     {
@@ -52,25 +52,25 @@ std::vector<std::string> CSVReader::tokenise(std::string csvLine, char separator
     return tokens;
 }
 
-OrderBookEntry CSVReader::stringsToOBE(std::vector<std::string> tokens)
+OrderBookEntry CSVReader::stringsToOBE(vector<string> tokens)
 {
     double price, amount;
 
     if (tokens.size() != 5) // bad
     {
-        std::cout << "Bad line " << std::endl;
-        throw std::exception{};
+        cout << "Bad line " << endl;
+        throw exception{};
     }
     // we have 5 tokens
     try
     {
-        price = std::stod(tokens[3]);
-        amount = std::stod(tokens[4]);
+        price = stod(tokens[3]);
+        amount = stod(tokens[4]);
     }
-    catch (const std::exception &e)
+    catch (const exception &e)
     {
-        std::cout << "CSVReader::stringsToOBE Bad float! " << tokens[3] << std::endl;
-        std::cout << "CSVReader::stringsToOBE Bad float! " << tokens[4] << std::endl;
+        cout << "CSVReader::stringsToOBE Bad float! " << tokens[3] << endl;
+        cout << "CSVReader::stringsToOBE Bad float! " << tokens[4] << endl;
         throw;
     }
 
@@ -83,22 +83,22 @@ OrderBookEntry CSVReader::stringsToOBE(std::vector<std::string> tokens)
     return obe;
 }
 
-OrderBookEntry CSVReader::stringsToOBE(std::string priceString,
-                                       std::string amountString,
-                                       std::string timestamp,
-                                       std::string product,
+OrderBookEntry CSVReader::stringsToOBE(string priceString,
+                                       string amountString,
+                                       string timestamp,
+                                       string product,
                                        OrderBookType orderType)
 {
     double price, amount;
     try
     {
-        price = std::stod(priceString);
-        amount = std::stod(amountString);
+        price = stod(priceString);
+        amount = stod(amountString);
     }
-    catch (const std::exception &e)
+    catch (const exception &e)
     {
-        std::cout << "CSVReader::stringsToOBE Bad float! " << priceString << std::endl;
-        std::cout << "CSVReader::stringsToOBE Bad float! " << amountString << std::endl;
+        cout << "CSVReader::stringsToOBE Bad float! " << priceString << endl;
+        cout << "CSVReader::stringsToOBE Bad float! " << amountString << endl;
         throw;
     }
     OrderBookEntry obe{price,

@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include "OrderBookEntry.h"
+using namespace std;
 
 class CSVReader
 {
