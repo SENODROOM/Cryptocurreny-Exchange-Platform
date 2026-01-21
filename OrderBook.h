@@ -9,33 +9,35 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 
+using namespace std;
+
 class OrderBook
 {
 public:
     /** construct, reading a csv data file */
-    OrderBook(std::string filename);
+    OrderBook(string filename);
     /** return vector of all know products in the dataset*/
-    std::vector<std::string> getKnownProducts();
+    vector<string> getKnownProducts();
     /** return vector of Orders according to the sent filters*/
-    std::vector<OrderBookEntry> getOrders(OrderBookType type,
-                                          std::string product,
-                                          std::string timestamp);
+    vector<OrderBookEntry> getOrders(OrderBookType type,
+                                     string product,
+                                     string timestamp);
 
     /** returns the earliest time in the orderbook*/
-    std::string getEarliestTime();
+    string getEarliestTime();
     /** returns the next time after the
      * sent time in the orderbook
      * If there is no next timestamp, wraps around to the start
      * */
-    std::string getNextTime(std::string timestamp);
+    string getNextTime(string timestamp);
 
     void insertOrder(OrderBookEntry &order);
 
-    std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
+    vector<OrderBookEntry> matchAsksToBids(string product, string timestamp);
 
-    static double getHighPrice(std::vector<OrderBookEntry> &orders);
-    static double getLowPrice(std::vector<OrderBookEntry> &orders);
+    static double getHighPrice(vector<OrderBookEntry> &orders);
+    static double getLowPrice(vector<OrderBookEntry> &orders);
 
 private:
-    std::vector<OrderBookEntry> orders;
+    vector<OrderBookEntry> orders;
 };

@@ -2,16 +2,16 @@
 #include "CSVReader.h"
 
 /** construct, reading a csv data file */
-OrderBook::OrderBook(std::string filename)
+OrderBook::OrderBook(string filename)
 {
     orders = CSVReader::readCSV(filename);
 }
 /** return vector of all know products in the dataset*/
-std::vector<std::string> OrderBook::getKnownProducts()
+vector<string> OrderBook::getKnownProducts()
 {
-    std::vector<std::string> products;
+    vector<string> products;
 
-    std::map<std::string, bool> prodMap;
+    map<string, bool> prodMap;
 
     for (OrderBookEntry &e : orders)
     {
@@ -27,11 +27,11 @@ std::vector<std::string> OrderBook::getKnownProducts()
     return products;
 }
 /** return vector of Orders according to the sent filters*/
-std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type,
-                                                 std::string product,
-                                                 std::string timestamp)
+vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type,
+                                            string product,
+                                            string timestamp)
 {
-    std::vector<OrderBookEntry> orders_sub;
+    vector<OrderBookEntry> orders_sub;
     for (OrderBookEntry &e : orders)
     {
         if (e.orderType == type &&
@@ -44,7 +44,7 @@ std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type,
     return orders_sub;
 }
 
-double OrderBook::getHighPrice(std::vector<OrderBookEntry> &orders)
+double OrderBook::getHighPrice(vector<OrderBookEntry> &orders)
 {
     double max = orders[0].price;
     for (OrderBookEntry &e : orders)
@@ -55,7 +55,7 @@ double OrderBook::getHighPrice(std::vector<OrderBookEntry> &orders)
     return max;
 }
 
-double OrderBook::getLowPrice(std::vector<OrderBookEntry> &orders)
+double OrderBook::getLowPrice(vector<OrderBookEntry> &orders)
 {
     double min = orders[0].price;
     for (OrderBookEntry &e : orders)
@@ -66,14 +66,14 @@ double OrderBook::getLowPrice(std::vector<OrderBookEntry> &orders)
     return min;
 }
 
-std::string OrderBook::getEarliestTime()
+string OrderBook::getEarliestTime()
 {
     return orders[0].timestamp;
 }
 
-std::string OrderBook::getNextTime(std::string timestamp)
+string OrderBook::getNextTime(string timestamp)
 {
-    std::string next_timestamp = "";
+    string next_timestamp = "";
     for (OrderBookEntry &e : orders)
     {
         if (e.timestamp > timestamp)
@@ -92,45 +92,45 @@ std::string OrderBook::getNextTime(std::string timestamp)
 void OrderBook::insertOrder(OrderBookEntry &order)
 {
     orders.push_back(order);
-    std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
+    sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std::string timestamp)
+vector<OrderBookEntry> OrderBook::matchAsksToBids(string product, string timestamp)
 {
     // asks = orderbook.asks
-    std::vector<OrderBookEntry> asks = getOrders(OrderBookType::ask,
-                                                 product,
-                                                 timestamp);
+    vector<OrderBookEntry> asks = getOrders(OrderBookType::ask,
+                                            product,
+                                            timestamp);
     // bids = orderbook.bids
-    std::vector<OrderBookEntry> bids = getOrders(OrderBookType::bid,
-                                                 product,
-                                                 timestamp);
+    vector<OrderBookEntry> bids = getOrders(OrderBookType::bid,
+                                            product,
+                                            timestamp);
 
     // sales = []
-    std::vector<OrderBookEntry> sales;
+    vector<OrderBookEntry> sales;
 
     // sort asks lowest first
-    std::sort(asks.begin(), asks.end(), OrderBookEntry::compareByPriceAsc);
+    sort(asks.begin(), asks.end(), OrderBookEntry::compareByPriceAsc);
     // sort bids highest first
-    std::sort(bids.begin(), bids.end(), OrderBookEntry::compareByPriceDesc);
+    sort(bids.begin(), bids.end(), OrderBookEntry::compareByPriceDesc);
     // for ask in asks:
-    std::cout << "max ask " << asks[asks.size() - 1].price << std::endl;
-    std::cout << "min ask " << asks[0].price << std::endl;
-    std::cout << "max bid " << bids[0].price << std::endl;
-    std::cout << "min bid " << bids[bids.size() - 1].price << std::endl;
+    cout << "max ask " << asks[asks.size() - 1].price << endl;
+    cout << "min ask " << asks[0].price << endl;
+    cout << "max bid " << bids[0].price << endl;
+    cout << "min bid " << bids[bids.size() - 1].price << endl;
 
     for (OrderBookEntry &ask : asks)
     {
-        // std::cout << "Ask p: " << ask.price << " a: " << ask.amount << std::endl;
+        // cout << "Ask p: " << ask.price << " a: " << ask.amount << endl;
         //     for bid in bids:
         for (OrderBookEntry &bid : bids)
         {
-            // std::cout << "bid p: " << bid.price << " a: " << bid.amount << std::endl;
+            // cout << "bid p: " << bid.price << " a: " << bid.amount << endl;
 
             //         if bid.price >= ask.price # we have a match
             if (bid.price >= ask.price)
             {
-                std::cout << "bid price is right " << std::endl;
+                cout << "bid price is right " << endl;
                 //             sale = new order()
                 //             sale.price = ask.price
                 OrderBookEntry sale{ask.price, 0, timestamp, product, OrderBookType::asksale};

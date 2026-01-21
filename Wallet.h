@@ -6,19 +6,21 @@
 
 #include "OrderBookEntry.h"
 
+using namespace std;
+
 class Wallet
 {
 public:
     Wallet();
-    void insertCurrency(std::string type, double amount);
-    bool removeCurrency(std::string type, double amount);
-    bool containsCurrency(std::string type, double amount);
+    void insertCurrency(string type, double amount);
+    bool removeCurrency(string type, double amount);
+    bool containsCurrency(string type, double amount);
     /** generate a string representation of the wallet */
-    std::string toString();
-    friend std::ostream &operator<<(std::ostream &os, Wallet &wallet);
+    string toString();
+    friend ostream &operator<<(ostream &os, Wallet &wallet);
     bool canFulfillOrder(OrderBookEntry order);
     void processSale(OrderBookEntry &sale);
 
 private:
-    std::map<std::string, double> currencies;
+    map<string, double> currencies;
 };
